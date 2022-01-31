@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const { isAuth } = require('../middlewares/guards');
-const { getAll, getById, create } = require('../services/furniture');
+const { isAuth, isOwner } = require('../middlewares/guards');
+const { getAll, create, update } = require('../services/furniture');
 const { parseError } = require('../util');
 const preload = require('../middlewares/preload');
 
@@ -32,10 +32,30 @@ router.post('/', isAuth(), async (req, res) => {
 });
 
 router.get('/:id', preload(), async (req, res) => {
-    const item = req.data;
-    item._ownerId = item.owner;
-    
+    const item = req.data.toObject();
+    item._ownerId = item.owner.toString();
+
     res.json(item);
+});
+
+router.put('/:id', isAuth(), preload(), isOwner(), async (req, res) => {
+    const updated = {
+        make: req.body.make,
+        model: req.body.model,
+        year: Number(req.body.year),
+        description: req.body.description,
+        price: Number(req.body.price),
+        img: req.body.img,
+        material: req.body.material
+    };
+    try {
+        const result = await update(req.data, updated);
+        res.status(201).json(result);
+
+    } catch (err) {
+        const message = parseError(err);
+        res.status(err.status || 400).json({ message });
+    }
 });
 
 

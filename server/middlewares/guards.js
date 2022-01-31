@@ -23,7 +23,7 @@ module.exports = {
         return (req, res, next) => {
             const item = req.data;
 
-            if (req.user.id != item.owner) {
+            if (req.user._id != item.owner) {
                 res.status(403)
                     .json({ message: 'You cannot modify this record.' });
             } else {
