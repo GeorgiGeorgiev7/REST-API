@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('./middlewares/cors');
 const furnitureController = require('./controllers/furniture');
+const userController = require('./controllers/user');
 
 
 start();
@@ -26,14 +27,10 @@ async function start() {
 
     app.use(cors());
     app.use(express.json());
-    app.use(cors());
 
-
-    app.get('/', (req, res) => {
-        res.json({ "message": "It works" });
-    });
 
     app.use('/data/catalog', furnitureController);
+    app.use('/users', userController);
 
     app.listen(port, () =>
         console.log(` >>> Server running: http://localhost:${port}`));
