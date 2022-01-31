@@ -1,12 +1,12 @@
 const router = require('express').Router();
-const { register } = require('../services/user');
+const { register, login } = require('../services/user');
 
 router.post('/register', async (req, res) => {
     const email = req.body.email.trim();
     const password = req.body.password.trim();
 
     try {
-        if (email) {
+        if (!email) {
             throw new Error('Email is required!');
         }
 
@@ -18,7 +18,7 @@ router.post('/register', async (req, res) => {
             email.toLocaleLowerCase(),
             password
         );
-
+        console.log(userData);
         res.json(userData);
 
     } catch (err) {

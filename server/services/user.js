@@ -7,6 +7,7 @@ const { SECRET } = require('../config');
 async function register(email, password) {
     const existing = await User.findOne({ email });
 
+    console.log(existing);
     if (existing) {
         const error = new Error('User with such an email already exists!');
         error.status = 409;
