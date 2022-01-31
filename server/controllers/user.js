@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { register } = require('../services/user');
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
     const email = req.body.email.trim();
     const password = req.body.password.trim();
 
@@ -15,6 +15,24 @@ router.post('/register', (req, res) => {
         }
 
         const userData = await register(
+            email.toLocaleLowerCase(),
+            password
+        );
+
+        res.json(userData);
+
+    } catch (err) {
+        res.status(err.status || 400).json({ message: err.message });
+    }
+
+});
+
+router.post('/login', async (req, res) => {
+    const email = req.body.email.trim();
+    const password = req.body.password.trim();
+
+    try {
+        const userData = await login(
             email.toLocaleLowerCase(),
             password
         );
