@@ -1,5 +1,5 @@
 # REST-API
-SoftUni RES API Workshop
+SoftUni REST API Workshop
 
 Resources: client
 ToDo: create server
