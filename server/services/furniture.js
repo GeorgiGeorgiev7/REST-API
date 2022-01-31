@@ -23,9 +23,14 @@ async function update(original, updated) {
     return original;
 }
 
+async function del(id) {
+    return Furniture.findByIdAndDelete(id);
+}
+
 module.exports = {
     getAll,
     getById,
     create,
-    update
+    update,
+    del
 };

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { isAuth, isOwner } = require('../middlewares/guards');
-const { getAll, create, update } = require('../services/furniture');
+const { getAll, create, update, del } = require('../services/furniture');
 const { parseError } = require('../util');
 const preload = require('../middlewares/preload');
 
@@ -33,7 +33,7 @@ router.post('/', isAuth(), async (req, res) => {
 
 router.get('/:id', preload(), async (req, res) => {
     const item = req.data.toObject();
-    item._ownerId = item.owner.toString();
+    item._ownerId = item.owner && item.owner.toString();
 
     res.json(item);
 });
@@ -58,6 +58,14 @@ router.put('/:id', isAuth(), preload(), isOwner(), async (req, res) => {
     }
 });
 
+router.delete('/:id', isAuth(), preload(), isOwner(), async (req, res) => {
+    try {
+        await del(req.params.id);
+        res.status(204).end();
+    } catch (err) {
+        res.status(err.status || 400).json({ message: err.message });
+    }
+});
 
 
 module.exports = router;
