@@ -28,12 +28,11 @@ router.post('/', isAuth(), async (req, res) => {
         const message = parseError(err);
         res.status(err.status || 400).json({ message });
     }
-
-    res.status(201).json(result.body);
 });
 
 router.get('/:id', async (req, res) => {
     const item = await getById(req.params.id);
+    item._ownerId = item.owner;
     res.json(item);
 });
 
