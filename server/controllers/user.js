@@ -20,9 +20,9 @@ router.post('/register', (req, res) => {
         );
 
         res.json(userData);
-        
+
     } catch (err) {
-        res.json({ message: err.message });
+        res.status(err.status || 400).json({ message: err.message });
     }
 
 });
