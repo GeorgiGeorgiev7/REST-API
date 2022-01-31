@@ -10,8 +10,8 @@ module.exports = () => (req, res, next) => {
             const userData = jwt.verify(token, SECRET);
             req.user = userData;
         }
-        next();
     } catch (err) {
-        res.status(401).json({ message: 'Invalid access token!' });
+        // res.status(401).json({ message: 'Invalid access token!' });
     }
+    next();
 };  
