@@ -8,6 +8,7 @@ const furnitureSchema = new Schema({
     price: { type: Number },
     img: { type: String },
     material: { type: String },
+    owner: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 
 module.exports = model('Furniture', furnitureSchema);
