@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { isAuth } = require('../middlewares/guards');
 const { getAll, getById, create } = require('../services/furniture');
 const { parseError } = require('../util');
+const preload = require('../middlewares/preload');
 
 
 router.get('/', async (req, res) => {
@@ -30,9 +31,10 @@ router.post('/', isAuth(), async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
-    const item = await getById(req.params.id);
+router.get('/:id', preload(), async (req, res) => {
+    const item = req.data;
     item._ownerId = item.owner;
+    
     res.json(item);
 });
 
